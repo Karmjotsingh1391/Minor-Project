@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pa">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gurbani Live Tracker — ਗੁਰਬਾਣੀ ਲਾਈਵ ਟ੍ਰੈਕਰ</title>
+  <meta name="description"
+    content="Live speech-to-Gurbani verse matching system for Sri Guru Granth Sahib Ji recitation tracking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <div id="pageDashboard" class="page page-dashboard active">
+
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
+
+    <div class="dash-shell">
+
+      <header class="dash-header">
+        <div class="dash-logo">
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="24" fill="url(#lg1)" />
+            <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="24" fill="white"
+              font-family="serif">ੴ</text>
+            <defs>
+              <linearGradient id="lg1" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f97316" />
+                <stop offset="1" stop-color="#d97706" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="dash-title">Gurbani Live Tracker</h1>
+          <p class="dash-subtitle">ਗੁਰਬਾਣੀ ਉਚਾਰਨ ਟ੍ਰੈਕਿੰਗ ਪ੍ਰਣਾਲੀ &nbsp;·&nbsp; Sri Guru Granth Sahib Ji</p>
+        </div>
+        <div class="conn-pill" id="connPill">
+          <span class="conn-dot-pill" id="connDotPill"></span>
+          <span id="connLabelPill">Connecting…</span>
+        </div>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle light / dark mode">
+          <span class="tt-track">
+            <span class="tt-thumb" id="ttThumb">
+              <svg class="tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+              <svg class="tt-moon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </span>
+          </span>
+        </button>
+      </header>
+
+      <div class="kpi-row">
+        <div class="kpi-card kpi-total">
+          <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="11" rx="3" />
+              <path d="M19 10a7 7 0 0 1-14 0" />
+              <line x1="12" y1="19" x2="12" y2="22" />
+              <line x1="8" y1="22" x2="16" y2="22" />
+            </svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value" id="dTotal">0</div>
+            <div class="kpi-label">Total Speeches</div>
+          </div>
+        </div>
+        <div class="kpi-card kpi-matched">
+          <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="9 12 11.5 14.5 15.5 9.5" />
+            </svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value" id="dMatched">0</div>
+            <div class="kpi-label">Matched</div>
+          </div>
+        </div>
+        <div class="kpi-card kpi-unmatched">
+          <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="15" y1="9" x2="9" y2="15" />
+              <line x1="9" y1="9" x2="15" y2="15" />
+            </svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value" id="dUnmatched">0</div>
+            <div class="kpi-label">Unmatched</div>
+          </div>
+        </div>
+        <div class="kpi-card kpi-rate">
+          <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="12" width="4" height="9" rx="1" />
+              <rect x="10" y="7" width="4" height="14" rx="1" />
+              <rect x="17" y="3" width="4" height="18" rx="1" />
+            </svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value" id="dRate">0<span class="kpi-unit">%</span></div>
+            <div class="kpi-label">Match Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-header">
+          <span class="progress-title">Session Match Rate</span>
+          <span class="progress-pct" id="dRatePct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <div class="progress-labels">
+          <span>0%</span><span>50%</span><span>100%</span>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="meta-card">
+          <div class="meta-icon">⏱️</div>
+          <div class="meta-body">
+            <div class="meta-value" id="dElapsed">0s</div>
+            <div class="meta-label">Session Duration</div>
+          </div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">⚡</div>
+          <div class="meta-body">
+            <div class="meta-value" id="dAvgSR">—</div>
+            <div class="meta-label">Avg Speech Recognition</div>
+          </div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">🔍</div>
+          <div class="meta-body">
+            <div class="meta-value" id="dAvgProc">—</div>
+            <div class="meta-label">Avg Total Processing</div>
+          </div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">📖</div>
+          <div class="meta-body">
+            <div class="meta-value" id="dVersePos">—</div>
+            <div class="meta-label">Current Verse Position</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tracker-status-card" id="trackerStatusCard">
+        <div class="ts-left">
+          <div class="ts-dot" id="tsDot"></div>
+          <div>
+            <div class="ts-title" id="tsTitle">Tracker Idle</div>
+            <div class="ts-sub">Press Go Live to begin tracking your recitation</div>
+          </div>
+        </div>
+        <div class="ts-right">
+          <button class="btn-golive" id="btnGoLive" onclick="goToLive()" disabled>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="golive-icon">
+              <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.5" />
+              <circle cx="10" cy="10" r="4" />
+            </svg>
+            Go Live
+          </button>
+          <button class="btn-reset-stats" onclick="resetStats()">Reset Stats</button>
+        </div>
+      </div>
+
+      <div class="activity-card">
+        <div class="activity-header">
+          <span class="activity-title">🕐 Recent Activity</span>
+          <span class="activity-count" id="activityCount">0 events</span>
+        </div>
+        <div class="activity-list" id="activityList">
+          <div class="activity-empty">No activity yet. Start live tracking to see results here.</div>
+        </div>
+      </div>
+
+      <footer class="dash-footer">
+        ੴ &nbsp; Built with reverence for Gurbani &nbsp;·&nbsp; Powered by Python &amp; Flask-SocketIO
+      </footer>
+    </div>
+  </div>
+
+
+  <div id="pageLive" class="page page-live">
+
+    <div class="live-shell">
+
+      <div class="live-topbar">
+        <button class="btn-back" onclick="goToDashboard()">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 4l-6 6 6 6" />
+          </svg>
+          Dashboard
+        </button>
+        <div class="live-topbar-center">
+          <span class="live-badge-dot" id="liveBadgeDot"></span>
+          <span class="live-badge-text" id="liveBadgeText">Idle</span>
+        </div>
+        <div class="live-kpi-mini">
+          <span class="lkm-item"><b id="lTotal">0</b> total</span>
+          <span class="lkm-sep">·</span>
+          <span class="lkm-item matched"><b id="lMatched">0</b> matched</span>
+          <span class="lkm-sep">·</span>
+          <span class="lkm-item unmatched"><b id="lUnmatched">0</b> missed</span>
+        </div>
+        <button class="theme-toggle theme-toggle-sm" onclick="toggleTheme()" title="Toggle theme">
+          <span class="tt-track">
+            <span class="tt-thumb" id="ttThumbLive">
+              <svg class="tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+              <svg class="tt-moon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="live-status-bar" id="liveStatusBar">
+        <span class="status-dot-live" id="statusDotLive"></span>
+        <span class="status-text-live" id="statusTextLive">Ready — Press Start to begin</span>
+      </div>
+      <div class="live-controls">
+        <button class="btn btn-start" id="btnStart" onclick="startListening()">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+            <circle cx="12" cy="12" r="4" />
+          </svg>
+          Start Tracking
+        </button>
+        <button class="btn btn-stop" id="btnStop" onclick="stopListening()" disabled>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="6" width="12" height="12" rx="2" />
+          </svg>
+          Stop
+        </button>
+        <button class="btn btn-reset" onclick="resetPosition()">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          Reset
+        </button>
+      </div>
+
+      <div class="detected-area" id="detectedArea">
+        <div class="detected-label">🎙️ Detected Speech</div>
+        <div class="detected-text" id="detectedText">—</div>
+      </div>
+      <div class="verse-panel">
+        <div class="verse-panel-header">
+          <span class="verse-panel-title">📖 Matched Verse</span>
+          <div class="score-badge" id="scoreBadge" style="display:none">
+            <span id="scoreValue">—</span>% match
+          </div>
+        </div>
+        <div class="verse-content" id="verseContent">
+          <div class="placeholder-msg">
+            <div class="placeholder-icon">ੴ</div>
+            <p>Start tracking and recite Gurbani — the matching verse will appear here.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-row" id="metricsRow" style="opacity:0">
+        <div class="metric-card">
+          <div class="metric-label">Speech Recognition</div>
+          <div class="metric-value" id="mSR">—</div>
+          <div class="metric-unit">seconds</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Verse Matching</div>
+          <div class="metric-value" id="mMatch">—</div>
+          <div class="metric-unit">seconds</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total Processing</div>
+          <div class="metric-value" id="mTotal">—</div>
+          <div class="metric-unit">seconds</div>
+        </div>
+      </div>
+
+      <div class="history-panel">
+        <div class="history-header">
+          <span>🕐 Session History</span>
+          <button class="btn-clear" onclick="clearHistory()">Clear</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="history-empty">No events yet this session.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pulse-ring" id="pulseRing" aria-hidden="true"></div>
+
+  <script src="/static/socket.io.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+
+</html>
