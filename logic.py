@@ -18,13 +18,11 @@ class VerseMatcher:
     def __init__(self, paragraphs, threshold=60):
         self.paragraphs = paragraphs
         self.threshold = threshold
-        self.last_index = 0  # THE ANCHOR: Remembers the last matched verse index
+        self.last_index = 0  
 
     def find_next_line(self, spoken_text):
         if not spoken_text.strip(): return []
 
-        # SPEED BOOST: Search 15 paragraphs ahead of the last match first
-        # This takes 0.001 seconds compared to 0.5 seconds for a global search.
         start = self.last_index
         end = min(self.last_index + 15, len(self.paragraphs))
         
@@ -33,10 +31,9 @@ class VerseMatcher:
             for line in para:
                 score = fuzz.token_set_ratio(spoken_text, line)
                 if score >= self.threshold:
-                    self.last_index = i # Update Anchor
+                    self.last_index = i
                     return [{"matched_line": line, "paragraph": "\n".join(para), "score": score}]
 
-        # FALLBACK: If not found nearby, search the whole book (Global Search)
         for i, para in enumerate(self.paragraphs):
             for line in para:
                 score = fuzz.token_set_ratio(spoken_text, line)
