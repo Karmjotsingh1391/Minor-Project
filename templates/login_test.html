@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Gurbani Live Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Gurmukhi:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --orange: #f97316;
+      --pink: #db2777;
+      --grad: linear-gradient(135deg, #f97316, #db2777);
+      --bg: #0f1021;
+      --surface: #181a30;
+      --surface2: #1e2038;
+      --border: rgba(255, 255, 255, .08);
+      --text: #eef0ff;
+      --text2: #9094b8;
+      --text3: #5a5f7a;
+      --radius: 14px;
+      --radius-sm: 10px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-wrap {
+      display: flex;
+      width: 100%;
+      max-width: 960px;
+      min-height: 650px;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, .65);
+    }
+
+    .left-panel {
+      flex: 0 0 400px;
+      background: linear-gradient(160deg, #1a1040 0%, #0f0a2e 45%, #1a0a1e 100%);
+      padding: 44px 38px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(249, 115, 22, .18), rgba(219, 39, 119, .13));
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: .28;
+      pointer-events: none;
+    }
+
+    .blob-1 {
+      width: 280px;
+      height: 280px;
+      background: #f97316;
+      top: -90px;
+      left: -80px;
+    }
+
+    .blob-2 {
+      width: 200px;
+      height: 200px;
+      background: #7c3aed;
+      bottom: -50px;
+      right: -40px;
+    }
+
+    /* Logo */
+    .lp-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 44px;
+    }
+
+    .lp-logo-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(249, 115, 22, .4);
+    }
+
+    .lp-logo-text .name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .lp-logo-text .sub {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .45);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .lp-headline {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .lp-headline h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.22;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .lp-headline h1 span {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lp-headline p {
+      font-size: .875rem;
+      color: rgba(255, 255, 255, .5);
+      line-height: 1.7;
+    }
+
+    .lp-quote {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .1);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 36px;
+    }
+
+    .lp-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 10px;
+    }
+
+    .lp-stars span {
+      color: var(--orange);
+      font-size: .85rem;
+    }
+
+    .lp-quote-text {
+      font-size: .82rem;
+      color: rgba(255, 255, 255, .72);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 14px;
+    }
+
+    .lp-quote-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lp-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .lp-author-name {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .lp-author-sub {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .4);
+    }
+
+    .right-panel {
+      flex: 1;
+      background: var(--surface);
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .rp-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .rp-sub {
+      font-size: .875rem;
+      color: var(--text2);
+      margin-bottom: 26px;
+      line-height: 1.5;
+    }
+
+    .rp-tabs {
+      display: flex;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      margin-bottom: 26px;
+      border: 1px solid var(--border);
+    }
+
+    .rp-tab {
+      flex: 1;
+      padding: 9px;
+      text-align: center;
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--text2);
+      border-radius: 7px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .rp-tab.active {
+      background: var(--grad);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(249, 115, 22, .3);
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+      animation: fadeSlide .3s ease;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateX(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: .74rem;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: .9rem;
+      pointer-events: none;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 16px 13px 40px;
+      font-size: .92rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .form-input::placeholder {
+      color: var(--text3);
+    }
+
+    .form-input:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, .15);
+    }
+
+    .otp-section-label {
+      font-size: .74rem;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 12px;
+    }
+
+    .otp-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .otp-box {
+      flex: 1;
+      min-width: 0;
+      height: 58px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      outline: none;
+      caret-color: var(--orange);
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+    }
+
+    .otp-box:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, .18);
+      transform: scale(1.06);
+    }
+
+    .otp-box.filled {
+      border-color: var(--orange);
+    }
+
+    .sent-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(249, 115, 22, .08);
+      border: 1px solid rgba(249, 115, 22, .22);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-bottom: 22px;
+      font-size: .84rem;
+      color: var(--text2);
+    }
+
+    .sent-info strong {
+      color: var(--orange);
+    }
+
+    .btn-cta {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: var(--grad);
+      color: #fff;
+      font-size: .97rem;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(249, 115, 22, .32);
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-cta:hover:not(:disabled) {
+      opacity: .87;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(249, 115, 22, .42);
+    }
+
+    .btn-cta:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .btn-cta .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, .3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+
+    .btn-cta.loading .spinner {
+      display: block;
+    }
+
+    .btn-cta.loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .otp-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      font-size: .8rem;
+      color: var(--text3);
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--orange);
+      font-size: .8rem;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+      text-decoration: underline dotted;
+    }
+
+    .link-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: var(--text3);
+      font-size: .7rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .security-note {
+      text-align: center;
+      font-size: .7rem;
+      color: var(--text3);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .security-note span {
+      color: var(--orange);
+    }
+
+    .alert {
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .83rem;
+      font-weight: 500;
+      margin-top: 12px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .alert.show {
+      display: flex;
+      animation: fadeSlide .25s ease;
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, .1);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, .2);
+    }
+
+    .alert-success {
+      background: rgba(34, 197, 94, .08);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, .18);
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-8px);
+      }
+
+      75% {
+        transform: translateX(8px);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .login-wrap {
+        flex-direction: column;
+        max-width: 440px;
+      }
+
+      .left-panel {
+        flex: none;
+        padding: 30px 24px;
+      }
+
+      .lp-headline h1 {
+        font-size: 1.45rem;
+      }
+
+      .lp-quote {
+        display: none;
+      }
+
+      .right-panel {
+        padding: 36px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-wrap">
+
+    <div class="left-panel">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="lp-logo">
+        <div class="lp-logo-icon">ੴ</div>
+        <div class="lp-logo-text">
+          <div class="name">Gurbani Tracker</div>
+          <div class="sub">Live Recognition</div>
+        </div>
+      </div>
+
+      <div class="lp-headline">
+        <h1>The Sacred Space for <span>Gurbani</span> Recitation.</h1>
+
+      </div>
+      <div class="lp-quote">
+        <div class="lp-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="lp-quote-text">"The interface feels divine. It captures every shabad with beautiful precision."</p>
+        <div class="lp-quote-author">
+          <div class="lp-avatar">ਗ</div>
+          <div>
+            <div class="lp-author-name">Gurbani Devotee</div>
+            <div class="lp-author-sub">Daily User · May 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+
+      <h1 class="rp-title">Welcome </h1>
+      <p class="rp-sub" id="rpSub">Enter your details to receive a one-time password.</p>
+
+      <div class="rp-tabs">
+        <button class="rp-tab active" id="tab1">Your Details</button>
+        <button class="rp-tab" id="tab2" disabled style="opacity:.4;cursor:not-allowed">Verify OTP</button>
+      </div>
+
+      <div class="step active" id="step1">
+        <form onsubmit="sendOtp(event)">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input class="form-input" type="text" id="inputName" placeholder="e.g. Gurpreet Singh" required
+                autocomplete="name" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉</span>
+              <input class="form-input" type="email" id="inputEmail" placeholder="you@example.com" required
+                autocomplete="email" />
+            </div>
+          </div>
+          <button class="btn-cta" type="submit" id="btnSend">
+            <div class="spinner"></div>
+            <span class="btn-text">Send OTP &nbsp;→</span>
+          </button>
+          <div class="alert alert-error" id="alertStep1"></div>
+        </form>
+        <div class="divider">Secure Gateway</div>
+
+      </div>
+      <div class="step" id="step2">
+        <div class="sent-info">
+          📧 OTP sent to <strong id="sentEmail">—</strong>
+        </div>
+
+        <form onsubmit="verifyOtp(event)">
+          <p class="otp-section-label">Enter 6-digit OTP</p>
+          <div class="otp-row" id="otpRow">
+            <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp0" />
+            <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp1" />
+            <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp2" />
+            <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp3" />
+            <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp4" />
+            <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp5" />
+          </div>
+
+          <button class="btn-cta" type="submit" id="btnVerify">
+            <div class="spinner"></div>
+            <span class="btn-text">Verify &amp; Enter &nbsp;→</span>
+          </button>
+
+          <div class="alert alert-error" id="alertStep2"></div>
+          <div class="alert alert-success" id="alertOk"></div>
+
+          <div class="otp-meta">
+            <button type="button" class="link-btn" onclick="goBack()">← Change details</button>
+            <span>
+              <button type="button" class="link-btn" id="btnResend" onclick="resendOtp()" disabled>Resend OTP</button>
+              <span id="resendTimer"></span>
+            </span>
+          </div>
+        </form>
+
+        <div class="divider">Secure Gateway</div>
+        <div class="security-note">🔒 OTP expires in <span>1 minute</span>. Do not share it.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function checkExistingSession() {
+      try {
+        const user = JSON.parse(localStorage.getItem('gurbani_user') || 'null');
+        if (user && user.email) {
+          window.location.replace('/');
+        }
+      } catch (e) { }
+    })();
+
+    let userName = '', userEmail = '', resendInterval = null;
+    window.addEventListener('DOMContentLoaded', () => {
+      const boxes = [...Array(6)].map((_, i) => document.getElementById('otp' + i));
+      boxes.forEach((box, i) => {
+        box.addEventListener('input', () => {
+          box.value = box.value.replace(/\D/g, '').slice(-1);
+          box.classList.toggle('filled', box.value !== '');
+          if (box.value && i < 5) boxes[i + 1].focus();
+        });
+        box.addEventListener('keydown', e => {
+          if (e.key === 'Backspace' && !box.value && i > 0) {
+            boxes[i - 1].focus();
+            boxes[i - 1].value = '';
+            boxes[i - 1].classList.remove('filled');
+          }
+        });
+        box.addEventListener('paste', e => {
+          const paste = (e.clipboardData || window.clipboardData)
+            .getData('text').replace(/\D/g, '').slice(0, 6);
+          if (paste) {
+            paste.split('').forEach((ch, j) => {
+              if (boxes[j]) { boxes[j].value = ch; boxes[j].classList.add('filled'); }
+            });
+            boxes[Math.min(paste.length, 5)].focus();
+            e.preventDefault();
+          }
+        });
+      });
+    });
+
+    function showStep(n) {
+      document.getElementById('step1').classList.toggle('active', n === 1);
+      document.getElementById('step2').classList.toggle('active', n === 2);
+      document.getElementById('tab1').classList.toggle('active', n === 1);
+      document.getElementById('tab2').classList.toggle('active', n === 2);
+      document.getElementById('tab2').disabled = (n === 1);
+      document.getElementById('tab2').style.opacity = n === 1 ? '.4' : '1';
+      document.getElementById('tab2').style.cursor = n === 1 ? 'not-allowed' : 'default';
+      document.getElementById('rpSub').textContent = n === 1
+        ? 'Enter your details to receive a one-time password.'
+        : 'Enter the 6-digit code sent to your inbox.';
+    }
+    function goBack() { clearAlert('alertStep2'); clearAlert('alertOk'); showStep(1); }
+    async function sendOtp(e) {
+      e.preventDefault();
+      userName = document.getElementById('inputName').value.trim();
+      userEmail = document.getElementById('inputEmail').value.trim();
+      setLoading('btnSend', true);
+      clearAlert('alertStep1');
+      try {
+        const res = await fetch('/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: userName, email: userEmail })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          document.getElementById('sentEmail').textContent = userEmail;
+          showStep(2);
+          startResendTimer();
+          setTimeout(() => document.getElementById('otp0').focus(), 200);
+        } else {
+          showAlert('alertStep1', 'error', data.message || 'Failed to send OTP.');
+        }
+      } catch {
+        showAlert('alertStep1', 'error', 'Network error. Try again.');
+      } finally {
+        setLoading('btnSend', false);
+      }
+    }
+
+    async function verifyOtp(e) {
+      e.preventDefault();
+      const otp = [...Array(6)].map((_, i) => document.getElementById('otp' + i).value).join('');
+      if (otp.length !== 6) { showAlert('alertStep2', 'error', 'Please enter all 6 digits.'); return; }
+      setLoading('btnVerify', true);
+      clearAlert('alertStep2');
+      clearAlert('alertOk');
+      try {
+        const res = await fetch('/auth/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: userEmail, otp })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          localStorage.setItem('gurbani_user', JSON.stringify({ name: userName, email: userEmail }));
+          showAlert('alertOk', 'success', '✓ Verified! Redirecting…');
+          clearInterval(resendInterval);
+          setTimeout(() => { window.location.href = '/'; }, 1200);
+        } else {
+          showAlert('alertStep2', 'error', data.message || 'Incorrect OTP. Try again.');
+          const row = document.getElementById('otpRow');
+          row.style.animation = 'none';
+          requestAnimationFrame(() => { row.style.animation = 'shake .4s ease'; });
+        }
+      } catch {
+        showAlert('alertStep2', 'error', 'Network error.');
+      } finally {
+        setLoading('btnVerify', false);
+      }
+    }
+
+    async function resendOtp() {
+      document.getElementById('btnResend').disabled = true;
+      try {
+        const res = await fetch('/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: userName, email: userEmail })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showAlert('alertOk', 'success', '✓ New OTP sent to your email.');
+          startResendTimer();
+        } else {
+          showAlert('alertStep2', 'error', data.message || 'Failed to resend.');
+        }
+      } catch {
+        showAlert('alertStep2', 'error', 'Network error.');
+      }
+    }
+
+    function startResendTimer() {
+      clearInterval(resendInterval);
+      let secs = 60;
+      const timerEl = document.getElementById('resendTimer');
+      const resendBtn = document.getElementById('btnResend');
+      timerEl.textContent = ` (${secs}s)`;
+      resendBtn.disabled = true;
+      resendInterval = setInterval(() => {
+        secs--;
+        timerEl.textContent = secs > 0 ? ` (${secs}s)` : '';
+        if (secs <= 0) { clearInterval(resendInterval); resendBtn.disabled = false; }
+      }, 1000);
+    }
+
+    function setLoading(id, on) {
+      const btn = document.getElementById(id);
+      btn.classList.toggle('loading', on);
+      btn.disabled = on;
+    }
+    function showAlert(id, type, msg) {
+      const el = document.getElementById(id);
+      el.className = `alert alert-${type} show`;
+      el.textContent = msg;
+    }
+    function clearAlert(id) {
+      const el = document.getElementById(id);
+      el.className = 'alert';
+      el.textContent = '';
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gurbani Live Tracker — ਗੁਰਬਾਣੀ ਲਾਈਵ ਟ੍ਰੈਕਰ</title>
+  <meta name="description"
+    content="Live speech-to-Gurbani verse matching system for Sri Guru Granth Sahib Ji recitation tracking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/static/main.css" />
+</head>
+
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="26" r="24" fill="url(#lgSidebar)" />
+        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="24" fill="white"
+          font-family="serif">ੴ</text>
+        <defs>
+          <linearGradient id="lgSidebar" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#f97316" />
+            <stop offset="1" stop-color="#db2777" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-name">Gurbani</span>
+        <span class="logo-sub">Live Tracker</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" id="navDashboard" onclick="showPage('dashboard')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" id="navLive" onclick="showPage('live')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="12" cy="12" r="9" fill="none" />
+        </svg>
+        <span>Go Live</span>
+        <span class="nav-badge" id="liveBadgeNav" style="display:none">LIVE</span>
+      </button>
+      <button class="nav-item" id="navActivity" onclick="showPage('activity')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18" />
+          <path d="M18 9l-5 5-4-4-4 4" />
+        </svg>
+        <span>Session History</span>
+        <span class="nav-count" id="navActivityCount">0</span>
+      </button>
+      <button class="nav-item" id="navSettings" onclick="showPage('settings')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="conn-pill" id="connPill">
+        <span class="conn-dot" id="connDot"></span>
+        <span id="connLabel">Connecting…</span>
+      </div>
+      <div class="user-pill" id="userPill">
+        <span class="user-avatar" id="userAvatar">?</span>
+        <span class="user-name" id="userNameDisplay">Guest</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <section class="page" id="pageDashboard">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle">ਗੁਰਬਾਣੀ ਉਚਾਰਨ ਟ੍ਰੈਕਿੰਗ — Session Overview</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline btn-sm" onclick="resetStats()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            Reset Stats
+          </button>
+          <button class="btn btn-primary btn-sm" id="btnGoLive" onclick="showPage('live')" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="4" fill="currentColor" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+            Go Live
+          </button>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+
+        <div class="dash-overview-card">
+          <div class="dash-ov-header">
+            <span class="dash-ov-section-label">Session Overview</span>
+            <span class="dash-ov-badge" id="tsTitle">Idle</span>
+          </div>
+
+          <div class="dash-rate-display">
+            <div class="dash-rate-ring">
+              <div class="dash-rate-inner">
+                <div class="dash-rate-value"><span id="dRate">0</span><span class="dash-rate-sym">%</span></div>
+                <div class="dash-rate-caption">Match Rate</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-ov-progress">
+            <div class="dash-prog-row">
+              <span class="dash-prog-label">Session Match Rate</span>
+              <span class="dash-prog-pct" id="dRatePct">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill" style="width:0%"></div>
+            </div>
+            <div class="dash-prog-ticks"><span>0%</span><span>50%</span><span>100%</span></div>
+          </div>
+
+          <div class="dash-stat-row">
+            <div class="dash-stat-pill pill-orange">
+              <div class="dsp-icon">🎙️</div>
+              <div class="dsp-val" id="dTotal">0</div>
+              <div class="dsp-lbl">Total</div>
+            </div>
+            <div class="dash-stat-divider"></div>
+            <div class="dash-stat-pill pill-green">
+              <div class="dsp-icon">✓</div>
+              <div class="dsp-val" id="dMatched">0</div>
+              <div class="dsp-lbl">Matched</div>
+            </div>
+            <div class="dash-stat-divider"></div>
+            <div class="dash-stat-pill pill-red">
+              <div class="dsp-icon">✕</div>
+              <div class="dsp-val" id="dUnmatched">0</div>
+              <div class="dsp-lbl">Missed</div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+
+      <footer class="page-footer">
+      </footer>
+    </section>
+
+    <section class="page hidden" id="pageLive">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Go Live</h1>
+          <p class="page-subtitle">Live speech recognition &amp; verse matching</p>
+        </div>
+        <div class="header-actions">
+          <div class="live-mini-stats">
+            <span class="mini-stat"><b id="lTotal">0</b> <span>total</span></span>
+            <span class="mini-sep">·</span>
+            <span class="mini-stat matched"><b id="lMatched">0</b> <span>matched</span></span>
+            <span class="mini-sep">·</span>
+            <span class="mini-stat unmatched"><b id="lUnmatched">0</b> <span>missed</span></span>
+          </div>
+          <div class="live-badge-wrap">
+            <span class="live-dot" id="liveBadgeDot"></span>
+            <span class="live-badge-text" id="liveBadgeText">Idle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-controls-row">
+        <div class="live-status-bar" id="liveStatusBar">
+          <span class="status-dot-live" id="statusDotLive"></span>
+          <span id="statusTextLive">Ready — Press Start to begin</span>
+        </div>
+        <div class="live-btns">
+          <button class="btn btn-start" id="btnStart" onclick="startListening()">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+              <circle cx="12" cy="12" r="4" />
+            </svg>
+            Start Tracking
+          </button>
+          <button class="btn btn-stop" id="btnStop" onclick="stopListening()" disabled>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <rect x="6" y="6" width="12" height="12" rx="2" />
+            </svg>
+            Stop
+          </button>
+          <button class="btn btn-outline" onclick="resetPosition()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              width="16" height="16">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            Reset Position
+          </button>
+        </div>
+      </div>
+
+      <div class="live-panels">
+        <div class="panel detected-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="panel-icon">🎙️</span>
+              Detected Speech
+            </div>
+            <div class="score-badge" id="scoreBadge" style="display:none">
+              <span id="scoreValue">—</span>% match
+            </div>
+          </div>
+          <div class="detected-text" id="detectedText">—</div>
+          <div class="detected-hint" id="detectedArea">Speak clearly in Punjabi — the system is listening…</div>
+        </div>
+
+        <div class="panel verse-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="panel-icon">📖</span>
+              Matched Verse
+            </div>
+          </div>
+          <div class="verse-content" id="verseContent">
+            <div class="verse-placeholder">
+              <div class="verse-placeholder-icon">ੴ</div>
+              <p>Start tracking and recite Gurbani — the matching verse will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-grid" id="metricsRow" style="opacity:0">
+        <div class="metric-card">
+          <div class="metric-label">Speech Recognition</div>
+          <div class="metric-value" id="mSR">—</div>
+          <div class="metric-unit">seconds</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Verse Matching</div>
+          <div class="metric-value" id="mMatch">—</div>
+          <div class="metric-unit">seconds</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total Processing</div>
+          <div class="metric-value" id="mTotal">—</div>
+          <div class="metric-unit">seconds</div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="page hidden" id="pageActivity">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Activity Log</h1>
+          <p class="page-subtitle">All recorded speech recognition events this session</p>
+        </div>
+        <div class="header-actions">
+          <span class="activity-meta" id="activityMeta">0 events recorded</span>
+          <button class="btn btn-outline btn-sm" onclick="clearAllActivity()">Clear All</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" id="filterAll" onclick="filterActivity('all')">All Events</button>
+        <button class="filter-btn" id="filterMatched" onclick="filterActivity('matched')">
+          <span class="dot green"></span> Matched
+        </button>
+        <button class="filter-btn" id="filterMissed" onclick="filterActivity('missed')">
+          <span class="dot red"></span> Missed
+        </button>
+        <div class="filter-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            class="filter-search-icon">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input type="text" class="filter-search" id="activitySearch" placeholder="Search spoken text…"
+            oninput="filterActivity(currentFilter)">
+        </div>
+      </div>
+
+      <div class="activity-table-wrap">
+        <div class="activity-table-header">
+          <span>Time</span>
+          <span>Spoken Text</span>
+          <span>Matched Verse</span>
+          <span>Status</span>
+          <span>Score</span>
+        </div>
+        <div class="activity-table-body" id="activityTableBody">
+          <div class="activity-empty-state">
+            <div class="empty-icon">🎙️</div>
+            <h3>No activity yet</h3>
+            <p>Go live and start reciting Gurbani to see all events logged here.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    
+    <section class="page hidden" id="pageSettings">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Settings</h1>
+          <p class="page-subtitle">Manage your account, appearance & tracker preferences</p>
+        </div>
+      </div>
+
+      <div class="settings-layout">
+
+        
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="settings-section-icon icon-orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+            <div>
+              <div class="settings-section-title">Profile</div>
+              <div class="settings-section-desc">Your public display name and account info</div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            
+            <div class="settings-profile-row">
+              <div class="settings-avatar" id="settingsAvatar">G</div>
+              <div class="settings-profile-info">
+                <div class="settings-profile-name" id="settingsProfileName">Loading…</div>
+                <div class="settings-profile-email" id="settingsProfileEmail">—</div>
+              </div>
+            </div>
+            <div class="settings-divider"></div>
+            
+            <div class="settings-field-row">
+              <label class="settings-label" for="settingsNameInput">Display Name</label>
+              <div class="settings-input-group">
+                <input class="settings-input" type="text" id="settingsNameInput" placeholder="Your full name" autocomplete="off" />
+                <button class="settings-save-btn" id="btnSaveName" onclick="saveDisplayName()">Save</button>
+              </div>
+              <div class="settings-field-hint">This is how your name appears in the sidebar and session reports.</div>
+            </div>
+            <div class="settings-alert" id="alertName"></div>
+          </div>
+        </div>
+
+        
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="settings-section-icon icon-violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            </div>
+            <div>
+              <div class="settings-section-title">Appearance</div>
+              <div class="settings-section-desc">Customize the look & feel of the interface</div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            
+            <div class="settings-toggle-row">
+              <div>
+                <div class="settings-toggle-label">Theme</div>
+                <div class="settings-toggle-desc">Switch between dark and light mode</div>
+              </div>
+              <div class="settings-theme-switcher" id="settingsThemeSwitcher">
+                <button class="theme-pill" id="themePillDark" onclick="setTheme('dark')">
+                  <span>☽</span> Dark
+                </button>
+                <button class="theme-pill" id="themePillLight" onclick="setTheme('light')">
+                  <span>☀</span> Light
+                </button>
+              </div>
+            </div>
+            <div class="settings-divider"></div>
+            
+            <div class="settings-toggle-row">
+              <div>
+                <div class="settings-toggle-label">Font Size</div>
+                <div class="settings-toggle-desc">Adjust the interface text size</div>
+              </div>
+              <div class="settings-font-btns">
+                <button class="font-size-btn" id="fontBtnSm" onclick="setFontSize('sm')" title="Small">A</button>
+                <button class="font-size-btn active" id="fontBtnMd" onclick="setFontSize('md')" title="Medium">A</button>
+                <button class="font-size-btn" id="fontBtnLg" onclick="setFontSize('lg')" title="Large">A</button>
+              </div>
+            </div>
+            <div class="settings-divider"></div>
+            
+            <div class="settings-toggle-row">
+              <div>
+                <div class="settings-toggle-label">Compact Sidebar</div>
+                <div class="settings-toggle-desc">Hide sidebar labels, show only icons</div>
+              </div>
+              <label class="settings-switch" for="switchCompact">
+                <input type="checkbox" id="switchCompact" onchange="toggleCompactSidebar(this.checked)">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="settings-section-icon icon-blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </div>
+            <div>
+              <div class="settings-section-title">Linked Email</div>
+              <div class="settings-section-desc">Change the email address linked to your account — requires OTP verification</div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-current-email-row">
+              <span class="settings-label">Current Email</span>
+              <span class="settings-email-badge" id="settingsCurrentEmail">—</span>
+            </div>
+            <div class="settings-divider"></div>
+
+            
+            <div id="emailStepA">
+              <div class="settings-field-row">
+                <label class="settings-label" for="settingsNewEmail">New Email Address</label>
+                <div class="settings-input-group">
+                  <input class="settings-input" type="email" id="settingsNewEmail" placeholder="newemail@example.com" autocomplete="off" />
+                  <button class="settings-save-btn" id="btnSendEmailOtp" onclick="sendEmailChangeOtp()">Send OTP</button>
+                </div>
+                <div class="settings-field-hint">An OTP will be sent to your new email for verification.</div>
+              </div>
+              <div class="settings-alert" id="alertEmailA"></div>
+            </div>
+
+            
+            <div id="emailStepB" style="display:none">
+              <div class="settings-sent-banner" id="emailChangeBanner">📧 OTP sent to <strong id="emailChangeTarget">—</strong></div>
+              <div class="settings-field-row" style="margin-top:14px">
+                <label class="settings-label">Enter 6-digit OTP</label>
+                <div class="settings-otp-row" id="settingsOtpRow">
+                  <input class="settings-otp-box" type="text" maxlength="1" inputmode="numeric" id="seOtp0" />
+                  <input class="settings-otp-box" type="text" maxlength="1" inputmode="numeric" id="seOtp1" />
+                  <input class="settings-otp-box" type="text" maxlength="1" inputmode="numeric" id="seOtp2" />
+                  <input class="settings-otp-box" type="text" maxlength="1" inputmode="numeric" id="seOtp3" />
+                  <input class="settings-otp-box" type="text" maxlength="1" inputmode="numeric" id="seOtp4" />
+                  <input class="settings-otp-box" type="text" maxlength="1" inputmode="numeric" id="seOtp5" />
+                </div>
+              </div>
+              <div class="settings-otp-actions">
+                <button class="settings-link-btn" onclick="cancelEmailChange()">← Cancel</button>
+                <button class="settings-save-btn" id="btnVerifyEmailOtp" onclick="verifyEmailChangeOtp()">Verify &amp; Update</button>
+              </div>
+              <div class="settings-alert" id="alertEmailB"></div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="settings-section-icon icon-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <circle cx="12" cy="12" r="9" fill="none" />
+              </svg>
+            </div>
+            <div>
+              <div class="settings-section-title">Tracker Preferences</div>
+              <div class="settings-section-desc">Configure speech recognition and session defaults</div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-toggle-row">
+              <div>
+                <div class="settings-toggle-label">Auto-scroll Verse Panel</div>
+                <div class="settings-toggle-desc">Automatically scroll to matched verse when detected</div>
+              </div>
+              <label class="settings-switch" for="switchAutoScroll">
+                <input type="checkbox" id="switchAutoScroll" checked onchange="savePref('autoScroll', this.checked)">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </label>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-toggle-row">
+              <div>
+                <div class="settings-toggle-label">Sound Notifications</div>
+                <div class="settings-toggle-desc">Play a soft chime when a verse is matched</div>
+              </div>
+              <label class="settings-switch" for="switchSound">
+                <input type="checkbox" id="switchSound" onchange="savePref('sound', this.checked)">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </label>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-toggle-row">
+              <div>
+                <div class="settings-toggle-label">Persist Session Across Reloads</div>
+                <div class="settings-toggle-desc">Keep stats & activity log when you refresh the page</div>
+              </div>
+              <label class="settings-switch" for="switchPersist">
+                <input type="checkbox" id="switchPersist" checked onchange="savePref('persist', this.checked)">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </label>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-toggle-row">
+              <div>
+                <div class="settings-toggle-label">Show Performance Metrics</div>
+                <div class="settings-toggle-desc">Display speech recognition and processing times on the Live page</div>
+              </div>
+              <label class="settings-switch" for="switchMetrics">
+                <input type="checkbox" id="switchMetrics" checked onchange="savePref('metrics', this.checked)">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="settings-section-icon icon-red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+            <div>
+              <div class="settings-section-title">Danger Zone</div>
+              <div class="settings-section-desc">Irreversible actions — proceed with caution</div>
+            </div>
+          </div>
+
+          <div class="settings-card settings-danger-card">
+            <div class="settings-danger-row">
+              <div>
+                <div class="settings-toggle-label">Clear All Session Data</div>
+                <div class="settings-toggle-desc">Erase all stats, activity log, and cached preferences stored locally</div>
+              </div>
+              <button class="settings-danger-btn" onclick="clearAllData()">Clear Data</button>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-danger-row">
+              <div>
+                <div class="settings-toggle-label">Sign Out</div>
+                <div class="settings-toggle-desc">Log out of your account on this device</div>
+              </div>
+              <button class="settings-danger-btn" onclick="logoutUser()">Logout</button>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="settings-section-icon icon-orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <div>
+              <div class="settings-section-title">About</div>
+              <div class="settings-section-desc">Application info and version</div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-about-grid">
+              <div class="settings-about-item">
+                <span class="settings-about-key">Application</span>
+                <span class="settings-about-val">Gurbani Live Tracker</span>
+              </div>
+              <div class="settings-about-item">
+                <span class="settings-about-key">Version</span>
+                <span class="settings-about-val">2.0.0</span>
+              </div>
+              <div class="settings-about-item">
+                <span class="settings-about-key">Engine</span>
+                <span class="settings-about-val">Flask + SocketIO + Google SR</span>
+              </div>
+              <div class="settings-about-item">
+                <span class="settings-about-key">Language</span>
+                <span class="settings-about-val">Punjabi (pa-IN)</span>
+              </div>
+              <div class="settings-about-item">
+                <span class="settings-about-key">Scripture</span>
+                <span class="settings-about-val">Sri Guru Granth Sahib Ji</span>
+              </div>
+              <div class="settings-about-item">
+                <span class="settings-about-key">Built with ੴ</span>
+                <span class="settings-about-val">Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div class="pulse-ring" id="pulseRing" aria-hidden="true"></div>
+
+  <script src="/static/socket.io.min.js"></script>
+  <script src="/static/main.js"></script>
+</body>
+
+</html>
