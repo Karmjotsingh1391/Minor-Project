@@ -1,4 +1,3 @@
-// ── Auth guard ────────────────────────────────────────
 (function authGuard() {
   try {
     const user = JSON.parse(localStorage.getItem("gurbani_user") || "null");
@@ -6,7 +5,7 @@
       window.location.href = "/login";
       return;
     }
-    // Show user info in sidebar
+    
     window.addEventListener("DOMContentLoaded", () => {
       const nameEl  = document.getElementById("userNameDisplay");
       const avatarEl = document.getElementById("userAvatar");
