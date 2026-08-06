@@ -19,17 +19,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
-        <circle cx="26" cy="26" r="24" fill="url(#lgSidebar)" />
-        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="24" fill="white"
-          font-family="serif">ੴ</text>
-        <defs>
-          <linearGradient id="lgSidebar" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#f97316" />
-            <stop offset="1" stop-color="#db2777" />
-          </linearGradient>
-        </defs>
-      </svg>
+      <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Gurbani Tracker Logo" class="logo-icon" style="width:46px;height:46px;border-radius:12px;object-fit:cover;box-shadow:0 4px 16px rgba(249,115,22,.4);" />
       <div class="logo-text">
         <span class="logo-name">Gurbani</span>
         <span class="logo-sub">Live Tracker</span>
@@ -244,7 +234,7 @@
           </div>
           <div class="verse-content" id="verseContent">
             <div class="verse-placeholder">
-              <div class="verse-placeholder-icon">ੴ</div>
+              <div class="verse-placeholder-icon">📖</div>
               <p>Start tracking and recite Gurbani — the matching verse will appear here.</p>
             </div>
           </div>
