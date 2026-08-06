@@ -139,7 +139,22 @@ The browser will open automatically at `http://localhost:5000/login`.
 
 ## 📸 Screenshots
 
-> *(Add screenshots of your login page, dashboard, and Go Live page here)*
+<img width="1508" height="966" alt="image" src="https://github.com/user-attachments/assets/2a5522d7-687e-4861-b6d2-1d21738ff2d7" />
+<img width="1528" height="972" alt="image" src="https://github.com/user-attachments/assets/da4b0ceb-49ba-476b-b5b4-f3fced81cc7e" />
+<img width="1600" height="820" alt="image" src="https://github.com/user-attachments/assets/dc76ab40-1b50-4082-abf7-3aed4a5961c1" />
+<img width="1600" height="819" alt="image" src="https://github.com/user-attachments/assets/93db0c8e-d806-44d3-a950-7f72b70750db" />
+<img width="1600" height="815" alt="image" src="https://github.com/user-attachments/assets/e82e2c63-e2ad-494f-851b-5e4f07d6bdd7" />
+<img width="1600" height="825" alt="image" src="https://github.com/user-attachments/assets/84bec8e0-fa7a-4379-97dc-8bfad560fe18" />
+<img width="1600" height="814" alt="image" src="https://github.com/user-attachments/assets/b0df116b-a121-4cc2-8eff-80f5108fb028" />
+<img width="1600" height="817" alt="image" src="https://github.com/user-attachments/assets/1b184e4e-ca7a-4647-9cb8-a910f137e86c" />
+
+
+
+
+
+
+
+
 
 ---
 
