@@ -25,17 +25,7 @@
 
       <header class="dash-header">
         <div class="dash-logo">
-          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="26" cy="26" r="24" fill="url(#lg1)" />
-            <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="24" fill="white"
-              font-family="serif">ੴ</text>
-            <defs>
-              <linearGradient id="lg1" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#f97316" />
-                <stop offset="1" stop-color="#d97706" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Gurbani Tracker Logo" style="width:46px;height:46px;border-radius:12px;object-fit:cover;box-shadow:0 4px 16px rgba(249,115,22,.4);" />
         </div>
         <div>
           <h1 class="dash-title">Gurbani Live Tracker</h1>
@@ -292,7 +282,7 @@
         </div>
         <div class="verse-content" id="verseContent">
           <div class="placeholder-msg">
-            <div class="placeholder-icon">ੴ</div>
+            <div class="placeholder-icon">📖</div>
             <p>Start tracking and recite Gurbani — the matching verse will appear here.</p>
           </div>
         </div>
