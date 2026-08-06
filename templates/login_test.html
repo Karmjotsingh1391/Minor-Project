@@ -120,6 +120,10 @@
       box-shadow: 0 4px 16px rgba(249, 115, 22, .4);
     }
 
+    .lp-logo-icon img{
+      border-radius: 10px;
+    }
+
     .lp-logo-text .name {
       font-size: 1rem;
       font-weight: 700;
@@ -593,7 +597,7 @@
       <div class="blob blob-1"></div>
       <div class="blob blob-2"></div>
       <div class="lp-logo">
-        <div class="lp-logo-icon">ੴ</div>
+        <div class="lp-logo-icon"><img src="{{ url_for('static', filename='logo.jpeg') }}" alt="" width="46px" height="46px" ></div>
         <div class="lp-logo-text">
           <div class="name">Gurbani Tracker</div>
           <div class="sub">Live Recognition</div>
