@@ -14,7 +14,7 @@ from logic import load_verses, VerseMatcher
 def resource_path(relative_path):
     """Get absolute path to resource — works for dev and for PyInstaller exe."""
     base = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-    return os.path.join(base, relative_path)
+    return os.path.join(base, relative_path) 
 
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
